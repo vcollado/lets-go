@@ -1,9 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 func main() {
-	var a string = "initial"
-	
-	fmt.Println(a)
+	if len(os.Args) > 1 {
+		fmt.Println(os.Args[1])
+	} else {
+		fmt.Println("Hello, Gopher")
+	}
 }
