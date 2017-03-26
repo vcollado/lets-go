@@ -1,7 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"flag"
+	"fmt"
+	"log"
+	"net"
 	"os"
 )
 
@@ -18,11 +22,31 @@ func main() {
 	} else {
 		// go run main.go <ip>
 		connIP := os.Args[1]
-		runGuest(connIp)
+		runGuest(connIP)
 	}
 }
 
+const port = "8080"
+
 func runHost(ip string) {
+	ipAndPort := ip + ":" + port
+	listener, listenerErr := net.Listen("tcp", ipAndPort)
+	if listenerErr != nil {
+		log.Fatal("Error: ", listenerErr)
+	}
+
+	conn, acceptErr := listener.Accept()
+	if acceptErr != nil {
+		log.Fatal("Error: ", acceptErr)
+	}
+
+	reader := bufio.NewReader(conn)
+	message, readErr := reader.ReadString('\n')
+
+	if readErr != nil {
+		log.Fatal("Error: ", readErr)
+	}
+	fmt.Println("Message received: ", message)
 
 }
 
